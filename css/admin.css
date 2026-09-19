@@ -1,0 +1,664 @@
+/* ============================================================
+   H4 — admin.css
+   MediSync Admin Portal — Light Blue & White Theme
+   ============================================================ */
+
+
+/* ============================================================
+   ADMIN ACCENT
+   ============================================================ */
+
+.portal-admin {
+  --color-accent: #2F9FEF;
+  --color-accent-dark: #1677C8;
+  --color-accent-glow: rgba(47, 159, 239, 0.22);
+}
+
+
+/* ============================================================
+   ADMIN SIDEBAR
+   ============================================================ */
+
+.sidebar.admin-sidebar {
+  background:
+    linear-gradient(180deg,
+      #0B3B66 0%,
+      #0E527F 55%,
+      #11658F 100%);
+
+  box-shadow:
+    6px 0 24px rgba(11, 59, 102, 0.10);
+}
+
+
+.sidebar.admin-sidebar .nav-item.active {
+  color: #7DD3FC;
+
+  background:
+    rgba(47, 159, 239, 0.20);
+
+  box-shadow:
+    inset 3px 0 0 #49B8FF;
+}
+
+
+.sidebar.admin-sidebar .sidebar-logo-icon {
+  background:
+    linear-gradient(135deg,
+      #49B8FF,
+      #2F9FEF);
+
+  box-shadow:
+    0 5px 14px rgba(47, 159, 239, 0.25);
+}
+
+
+/* ============================================================
+   ADMIN LOGIN
+   ============================================================ */
+
+.admin-login-page {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(135deg,
+      #EAF7FF 0%,
+      #DDF2FF 45%,
+      #FFFFFF 100%);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--sp-6);
+}
+
+
+.admin-login-card {
+  background:
+    rgba(255, 255, 255, 0.97);
+
+  border-radius:
+    var(--r-2xl);
+
+  padding: var(--sp-10);
+
+  width: 100%;
+
+  max-width: 420px;
+
+  border:
+    1px solid #DCEAF4;
+
+  box-shadow:
+    0 20px 45px rgba(11, 59, 102, 0.12);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+/* Small blue line at top */
+
+.admin-login-card::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 4px;
+
+  background:
+    linear-gradient(90deg,
+      #49B8FF,
+      #2F9FEF,
+      #1677C8);
+}
+
+
+.admin-login-logo {
+  text-align: center;
+
+  margin-bottom: var(--sp-8);
+}
+
+
+.admin-login-icon {
+  width: 60px;
+  height: 60px;
+
+  background:
+    linear-gradient(135deg,
+      #49B8FF,
+      #2F9FEF);
+
+  border-radius:
+    var(--r-xl);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.75rem;
+
+  margin:
+    0 auto var(--sp-4);
+
+  color: #FFFFFF;
+
+  box-shadow:
+    0 8px 20px rgba(47, 159, 239, 0.25);
+}
+
+
+/* ============================================================
+   NETWORK OVERVIEW
+   ============================================================ */
+
+.network-overview-header {
+  background:
+    linear-gradient(135deg,
+      #0B3B66 0%,
+      #0E527F 55%,
+      #1677A8 100%);
+
+  border-radius:
+    var(--r-xl);
+
+  padding:
+    var(--sp-6) var(--sp-8);
+
+  margin-bottom:
+    var(--sp-6);
+
+  display: flex;
+
+  gap: var(--sp-8);
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  box-shadow:
+    0 10px 25px rgba(11, 59, 102, 0.12);
+}
+
+
+.network-stat-big {
+  text-align: center;
+}
+
+
+.network-stat-big-value {
+  font-size: var(--fs-4xl);
+
+  font-weight: 800;
+
+  color: #FFFFFF;
+
+  line-height: 1;
+}
+
+
+.network-stat-big-label {
+  font-size: var(--fs-xs);
+
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+
+  margin-top: var(--sp-1);
+}
+
+
+.network-status-breakdown {
+  display: flex;
+
+  gap: var(--sp-5);
+
+  margin-left: auto;
+
+  flex-wrap: wrap;
+}
+
+
+.network-status-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: var(--sp-2);
+
+  color:
+    rgba(255, 255, 255, 0.82);
+
+  font-size: var(--fs-sm);
+}
+
+
+.network-status-item .count {
+  font-weight: 800;
+
+  font-size: var(--fs-xl);
+
+  color: #FFFFFF;
+}
+
+
+/* ============================================================
+   HOSPITALS TABLE
+   ============================================================ */
+
+.hospital-row-critical td {
+  background:
+    rgba(229, 72, 77, 0.045) !important;
+}
+
+
+.hospital-row-low td {
+  background:
+    rgba(229, 155, 22, 0.045) !important;
+}
+
+
+.hospital-name-cell {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.hospital-name-cell .name {
+  font-weight: 700;
+
+  font-size: var(--fs-sm);
+
+  color: var(--color-text);
+}
+
+
+.hospital-name-cell .area {
+  font-size: var(--fs-xs);
+
+  color: var(--color-text-muted);
+
+  margin-top: 1px;
+}
+
+
+.hospital-name-cell .type {
+  font-size: 0.65rem;
+
+  color: var(--color-text-light);
+
+  margin-top: 1px;
+}
+
+
+.resource-mini {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  font-size: var(--fs-xs);
+}
+
+
+.resource-mini .avail {
+  font-weight: 700;
+
+  font-size: var(--fs-sm);
+
+  color: var(--color-text);
+}
+
+
+.resource-mini .total {
+  color: var(--color-text-muted);
+}
+
+
+.last-updated-cell {
+  font-size: var(--fs-xs);
+
+  color: var(--color-text-muted);
+}
+
+
+/* ============================================================
+   ADMIN ANALYTICS
+   ============================================================ */
+
+.admin-analytics-grid {
+  display: grid;
+
+  grid-template-columns:
+    2fr 1fr;
+
+  gap: var(--sp-5);
+
+  margin-bottom: var(--sp-5);
+}
+
+
+.admin-analytics-row-2 {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: var(--sp-5);
+}
+
+
+/* ============================================================
+   ADMIN ALERTS PANEL
+   ============================================================ */
+
+.admin-alerts-panel {
+  background:
+    linear-gradient(135deg,
+      #7F1D1D 0%,
+      #B91C1C 55%,
+      #DC2626 100%);
+
+  border-radius:
+    var(--r-xl);
+
+  padding: var(--sp-6);
+
+  margin-bottom: var(--sp-6);
+
+  box-shadow:
+    0 10px 25px rgba(185, 28, 28, 0.15);
+}
+
+
+.admin-alerts-title {
+  font-size: var(--fs-lg);
+
+  font-weight: 800;
+
+  color: #FFFFFF;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: var(--sp-3);
+
+  margin-bottom: var(--sp-5);
+}
+
+
+.admin-alert-item {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: var(--sp-3);
+
+  background:
+    rgba(255, 255, 255, 0.09);
+
+  border-radius:
+    var(--r-lg);
+
+  padding: var(--sp-4);
+
+  margin-bottom: var(--sp-3);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(4px);
+}
+
+
+.admin-alert-icon {
+  font-size: 1.3rem;
+
+  flex-shrink: 0;
+}
+
+
+.admin-alert-body {
+  flex: 1;
+}
+
+
+.admin-alert-title {
+  font-weight: 700;
+
+  font-size: var(--fs-sm);
+
+  color: #FFFFFF;
+}
+
+
+.admin-alert-message {
+  font-size: var(--fs-xs);
+
+  color:
+    rgba(255, 255, 255, 0.70);
+
+  margin-top: 2px;
+}
+
+
+.admin-alert-time {
+  font-size: var(--fs-xs);
+
+  color:
+    rgba(255, 255, 255, 0.45);
+
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   ADMIN MAP
+   ============================================================ */
+
+.admin-map-layout {
+  display: grid;
+
+  grid-template-columns:
+    1fr 300px;
+
+  gap: var(--sp-5);
+
+  align-items: start;
+}
+
+
+.map-legend {
+  background:
+    rgba(255, 255, 255, 0.97);
+
+  border-radius:
+    var(--r-xl);
+
+  border:
+    1px solid var(--color-border-light);
+
+  padding: var(--sp-5);
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+
+.map-legend-title {
+  font-weight: 700;
+
+  font-size: var(--fs-sm);
+
+  margin-bottom: var(--sp-4);
+
+  color: var(--color-text);
+}
+
+
+.map-legend-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: var(--sp-3);
+
+  padding:
+    var(--sp-2) 0;
+
+  border-bottom:
+    1px solid var(--color-border-light);
+
+  font-size: var(--fs-sm);
+}
+
+
+.map-legend-item:last-child {
+  border-bottom: none;
+}
+
+
+.map-legend-color {
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   ADMIN PROFILE
+   ============================================================ */
+
+.admin-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: var(--sp-2);
+
+  padding:
+    var(--sp-1) var(--sp-4);
+
+  background:
+    #EAF6FF;
+
+  color:
+    #1677C8;
+
+  border:
+    1px solid #BBDFF5;
+
+  border-radius:
+    var(--r-full);
+
+  font-size: var(--fs-xs);
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.05em;
+}
+
+
+/* ============================================================
+   ADMIN INPUT / CONTROL FOCUS
+   ============================================================ */
+
+.portal-admin .form-control:focus {
+  border-color:
+    var(--color-accent);
+
+  box-shadow:
+    0 0 0 3px var(--color-accent-glow);
+}
+
+
+/* ============================================================
+   ADMIN PRIMARY BUTTON
+   ============================================================ */
+
+.portal-admin .btn-primary {
+  background:
+    linear-gradient(135deg,
+      #2F9FEF,
+      #1677C8);
+
+  border-color: transparent;
+
+  color: #FFFFFF;
+
+  box-shadow:
+    0 4px 12px rgba(47, 159, 239, 0.20);
+}
+
+
+.portal-admin .btn-primary:hover {
+  background:
+    linear-gradient(135deg,
+      #2492DF,
+      #126BB5);
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(47, 159, 239, 0.28);
+}
+
+
+/* ============================================================
+   ADMIN RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+  .admin-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-map-layout {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .admin-analytics-row-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .network-overview-header {
+    padding:
+      var(--sp-5);
+  }
+
+  .network-status-breakdown {
+    margin-left: 0;
+  }
+
+  .admin-login-card {
+    padding: var(--sp-6);
+  }
+
+}

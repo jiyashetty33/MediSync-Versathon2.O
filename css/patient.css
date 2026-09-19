@@ -1,0 +1,817 @@
+/* ============================================================
+   H4 — patient.css
+   Patient Portal — Light Blue & White Theme
+   ============================================================ */
+
+
+/* ============================================================
+   PATIENT COLOR ACCENT
+   ============================================================ */
+
+.portal-patient {
+  --color-accent: #2F9FEF;
+  --color-accent-dark: #1677C8;
+  --color-accent-glow: rgba(47, 159, 239, 0.22);
+}
+
+
+/* ============================================================
+   PATIENT LOGIN
+   ============================================================ */
+
+.patient-login-page {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(135deg,
+      #EAF7FF 0%,
+      #DDF2FF 45%,
+      #FFFFFF 100%);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--sp-6);
+}
+
+
+.patient-login-card {
+  background:
+    rgba(255, 255, 255, 0.97);
+
+  border-radius:
+    var(--r-2xl);
+
+  padding:
+    var(--sp-10);
+
+  width: 100%;
+
+  max-width: 440px;
+
+  border:
+    1px solid #DCEAF4;
+
+  box-shadow:
+    0 20px 45px rgba(11, 59, 102, 0.12);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+/* Blue top accent */
+
+.patient-login-card::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 4px;
+
+  background:
+    linear-gradient(90deg,
+      #49B8FF,
+      #2F9FEF,
+      #1677C8);
+}
+
+
+.patient-login-logo {
+  text-align: center;
+
+  margin-bottom:
+    var(--sp-8);
+}
+
+
+.patient-login-logo-icon {
+  width: 60px;
+
+  height: 60px;
+
+  background:
+    linear-gradient(135deg,
+      #49B8FF,
+      #2F9FEF);
+
+  border-radius:
+    var(--r-xl);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 1.75rem;
+
+  margin:
+    0 auto var(--sp-4);
+
+  color: #FFFFFF;
+
+  box-shadow:
+    0 8px 20px rgba(47, 159, 239, 0.25);
+}
+
+
+.patient-login-title {
+  font-size:
+    var(--fs-2xl);
+
+  font-weight: 800;
+
+  color:
+    var(--color-text);
+
+  margin-bottom:
+    var(--sp-1);
+}
+
+
+.patient-login-sub {
+  font-size:
+    var(--fs-sm);
+
+  color:
+    var(--color-text-muted);
+}
+
+
+/* ============================================================
+   PATIENT SIDEBAR
+   ============================================================ */
+
+.sidebar.patient-sidebar {
+  background:
+    linear-gradient(180deg,
+      #0B3B66 0%,
+      #0E527F 55%,
+      #11658F 100%);
+
+  box-shadow:
+    6px 0 24px rgba(11, 59, 102, 0.10);
+}
+
+
+.sidebar.patient-sidebar .nav-item.active {
+  color:
+    #7DD3FC;
+
+  background:
+    rgba(47, 159, 239, 0.20);
+
+  box-shadow:
+    inset 3px 0 0 #49B8FF;
+}
+
+
+.sidebar.patient-sidebar .sidebar-logo-icon {
+  background:
+    linear-gradient(135deg,
+      #49B8FF,
+      #2F9FEF);
+
+  box-shadow:
+    0 5px 14px rgba(47, 159, 239, 0.25);
+}
+
+
+/* ============================================================
+   NEARBY HOSPITALS
+   ============================================================ */
+
+.nearby-section {
+  display: grid;
+
+  grid-template-columns:
+    1fr 420px;
+
+  gap: var(--sp-6);
+
+  align-items: start;
+}
+
+
+.hospital-cards-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: var(--sp-4);
+}
+
+
+.nearby-hospital-card {
+  background:
+    #FFFFFF;
+
+  border-radius:
+    var(--r-xl);
+
+  border:
+    2px solid var(--color-border-light);
+
+  padding:
+    var(--sp-5);
+
+  transition:
+    all var(--t-base);
+
+  cursor: pointer;
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+
+.nearby-hospital-card:hover {
+  transform:
+    translateX(4px);
+
+  box-shadow:
+    0 8px 22px rgba(47, 159, 239, 0.12);
+
+  border-color:
+    #2F9FEF;
+}
+
+
+.nearby-hospital-card.critical {
+  border-color:
+    var(--color-critical-border);
+}
+
+
+.nearby-hospital-card.low {
+  border-color:
+    var(--color-low-border);
+}
+
+
+.nearby-hospital-top {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: var(--sp-3);
+
+  margin-bottom:
+    var(--sp-4);
+}
+
+
+.nearby-hospital-name {
+  font-size:
+    var(--fs-base);
+
+  font-weight: 700;
+
+  color:
+    var(--color-text);
+}
+
+
+.nearby-hospital-area {
+  font-size:
+    var(--fs-xs);
+
+  color:
+    var(--color-text-muted);
+
+  margin-top: 2px;
+}
+
+
+.nearby-hospital-type {
+  font-size:
+    var(--fs-xs);
+
+  color:
+    var(--color-text-muted);
+
+  margin-top: 1px;
+}
+
+
+/* Hospital resource mini cards */
+
+.nearby-hospital-resources {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: var(--sp-2);
+}
+
+
+.nearby-res-item {
+  background:
+    #F4F9FD;
+
+  border-radius:
+    var(--r-sm);
+
+  padding:
+    var(--sp-2);
+
+  text-align: center;
+
+  border:
+    1px solid #E2EEF5;
+}
+
+
+.nearby-res-val {
+  font-weight: 700;
+
+  font-size:
+    var(--fs-base);
+
+  color:
+    var(--color-text);
+}
+
+
+.nearby-res-lbl {
+  font-size:
+    0.65rem;
+
+  color:
+    var(--color-text-muted);
+
+  text-transform:
+    uppercase;
+}
+
+
+/* ============================================================
+   PATIENT REQUEST STATUS
+   ============================================================ */
+
+.patient-requests-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom:
+    var(--sp-5);
+}
+
+
+.patient-request-card {
+  background:
+    #FFFFFF;
+
+  border-radius:
+    var(--r-xl);
+
+  border:
+    1px solid var(--color-border-light);
+
+  padding:
+    var(--sp-5);
+
+  box-shadow:
+    var(--shadow-sm);
+
+  margin-bottom:
+    var(--sp-4);
+
+  display: flex;
+
+  gap: var(--sp-5);
+
+  align-items: flex-start;
+
+  transition:
+    all var(--t-fast);
+}
+
+
+.patient-request-card:hover {
+  border-color:
+    #C9E5F7;
+
+  box-shadow:
+    0 7px 18px rgba(47, 159, 239, 0.08);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.patient-request-icon {
+  width: 44px;
+
+  height: 44px;
+
+  border-radius:
+    var(--r-lg);
+
+  background:
+    rgba(47, 159, 239, 0.10);
+
+  color:
+    var(--color-accent-dark);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size:
+    1.3rem;
+
+  flex-shrink: 0;
+}
+
+
+.patient-request-body {
+  flex: 1;
+}
+
+
+.patient-request-type {
+  font-weight: 700;
+
+  font-size:
+    var(--fs-base);
+
+  margin-bottom:
+    var(--sp-1);
+}
+
+
+.patient-request-hospital {
+  font-size:
+    var(--fs-sm);
+
+  color:
+    var(--color-text-muted);
+
+  margin-bottom:
+    var(--sp-3);
+}
+
+
+.patient-request-meta {
+  display: flex;
+
+  gap: var(--sp-3);
+
+  align-items: center;
+
+  flex-wrap: wrap;
+}
+
+
+/* ============================================================
+   NEW REQUEST FORM
+   ============================================================ */
+
+.new-request-types {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: var(--sp-3);
+
+  margin-bottom:
+    var(--sp-5);
+}
+
+
+.request-type-btn {
+  padding:
+    var(--sp-4);
+
+  border-radius:
+    var(--r-lg);
+
+  border:
+    2px solid var(--color-border);
+
+  background:
+    #FFFFFF;
+
+  cursor: pointer;
+
+  text-align: center;
+
+  transition:
+    all var(--t-fast);
+}
+
+
+.request-type-btn:hover {
+  border-color:
+    #2F9FEF;
+
+  background:
+    rgba(47, 159, 239, 0.05);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.request-type-btn.selected {
+  border-color:
+    #2F9FEF;
+
+  background:
+    rgba(47, 159, 239, 0.10);
+
+  box-shadow:
+    0 4px 12px rgba(47, 159, 239, 0.10);
+}
+
+
+.request-type-icon {
+  font-size:
+    1.75rem;
+
+  margin-bottom:
+    var(--sp-2);
+}
+
+
+.request-type-label {
+  font-size:
+    var(--fs-sm);
+
+  font-weight: 600;
+
+  color:
+    var(--color-text);
+}
+
+
+/* ============================================================
+   PATIENT PROFILE
+   ============================================================ */
+
+.patient-profile-card {
+  max-width:
+    520px;
+
+  background:
+    #FFFFFF;
+
+  border-radius:
+    var(--r-2xl);
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    var(--shadow-lg);
+
+  border:
+    1px solid var(--color-border-light);
+}
+
+
+.patient-profile-header {
+  background:
+    linear-gradient(135deg,
+      #0B3B66,
+      #11658F);
+
+  padding:
+    var(--sp-10) var(--sp-8);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: var(--sp-6);
+}
+
+
+.patient-profile-avatar {
+  width: 72px;
+
+  height: 72px;
+
+  border-radius:
+    50%;
+
+  background:
+    linear-gradient(135deg,
+      rgba(73, 184, 255, 0.75),
+      rgba(47, 159, 239, 0.65));
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size:
+    1.75rem;
+
+  font-weight: 800;
+
+  color:
+    #FFFFFF;
+
+  border:
+    3px solid rgba(255, 255, 255, 0.30);
+
+  flex-shrink: 0;
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ============================================================
+   LOCATION PERMISSION BANNER
+   ============================================================ */
+
+.location-banner {
+  display: flex;
+
+  align-items: center;
+
+  gap: var(--sp-4);
+
+  padding:
+    var(--sp-5) var(--sp-6);
+
+  background:
+    linear-gradient(90deg,
+      rgba(47, 159, 239, 0.09),
+      rgba(47, 159, 239, 0.03));
+
+  border:
+    1px solid rgba(47, 159, 239, 0.20);
+
+  border-radius:
+    var(--r-xl);
+
+  margin-bottom:
+    var(--sp-6);
+}
+
+
+.location-icon {
+  font-size:
+    2rem;
+
+  flex-shrink: 0;
+}
+
+
+.location-text h4 {
+  font-size:
+    var(--fs-base);
+
+  font-weight: 700;
+
+  margin-bottom: 2px;
+}
+
+
+.location-text p {
+  font-size:
+    var(--fs-sm);
+
+  color:
+    var(--color-text-muted);
+
+  margin: 0;
+}
+
+
+/* ============================================================
+   PATIENT BUTTONS
+   ============================================================ */
+
+.portal-patient .btn-primary {
+  background:
+    linear-gradient(135deg,
+      #2F9FEF,
+      #1677C8);
+
+  border-color:
+    transparent;
+
+  color:
+    #FFFFFF;
+
+  box-shadow:
+    0 4px 12px rgba(47, 159, 239, 0.20);
+}
+
+
+.portal-patient .btn-primary:hover {
+  background:
+    linear-gradient(135deg,
+      #2492DF,
+      #126BB5);
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(47, 159, 239, 0.28);
+}
+
+
+/* ============================================================
+   FORM FOCUS
+   ============================================================ */
+
+.portal-patient .form-control:focus {
+  border-color:
+    var(--color-accent);
+
+  box-shadow:
+    0 0 0 3px var(--color-accent-glow);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+  .nearby-section {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .patient-login-card {
+    padding:
+      var(--sp-6);
+  }
+
+  .nearby-hospital-resources {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .patient-request-card {
+    gap:
+      var(--sp-3);
+
+    padding:
+      var(--sp-4);
+  }
+
+  .patient-profile-header {
+    padding:
+      var(--sp-7) var(--sp-6);
+
+    gap:
+      var(--sp-4);
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .new-request-types {
+    grid-template-columns:
+      1fr;
+  }
+
+  .nearby-hospital-resources {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .location-banner {
+    align-items:
+      flex-start;
+
+    padding:
+      var(--sp-4);
+  }
+
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediSync — Patient Dashboard</title>
+  <meta name="description" content="MediSync Patient Portal — find nearby hospitals and track your resource requests.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/patient.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body class="portal-patient">
+<div id="toast-container"></div>
+
+<div id="patient-dashboard" class="app-layout">
+
+  <!-- =========================================================
+       SIDEBAR
+       ========================================================= -->
+  <nav class="sidebar patient-sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🧑‍⚕️</div>
+      <div class="sidebar-logo-text">
+        <div class="sidebar-logo-name">MediSync</div>
+        <div class="sidebar-logo-tag">Patient Portal</div>
+      </div>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-avatar">P</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebar-user-name">Loading…</div>
+        <div class="sidebar-user-role">Patient</div>
+      </div>
+    </div>
+
+    <ul class="sidebar-nav" role="navigation">
+      <li class="nav-sect">Find Care</li>
+      <li><button class="nav-item" data-section="overview">
+        <span class="nav-icon">🏥</span>Nearby Hospitals
+      </button></li>
+
+      <li class="nav-sect">My Requests</li>
+      <li><button class="nav-item" data-section="requests">
+        <span class="nav-icon">📋</span>My Requests
+      </button></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="nav-item" data-section="profile">
+        <span class="nav-icon">👤</span>Profile
+      </button>
+      <button class="nav-item" id="logout-btn">
+        <span class="nav-icon">🚪</span>Log Out
+      </button>
+    </div>
+  </nav>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- =========================================================
+       MAIN CONTENT
+       ========================================================= -->
+  <div class="main-content">
+    <header class="page-header">
+      <div class="page-header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+        <div>
+          <h1 class="page-title" id="page-title">Nearby Hospitals</h1>
+          <p class="page-subtitle" id="page-subtitle">Find hospitals near you</p>
+        </div>
+      </div>
+      <div class="page-header-right">
+        <button class="btn btn-primary btn-sm" id="btn-new-request">+ New Request</button>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- =====================================================
+           SECTION: OVERVIEW (Nearby Hospitals)
+           ===================================================== -->
+      <section id="sec-overview" class="section">
+        <!-- Location banner -->
+        <div id="location-banner" class="location-banner hidden">
+          <div class="location-icon">📍</div>
+          <div class="location-text">
+            <h4>Detecting Your Location</h4>
+            <p>We're finding hospitals near you. Please allow location access if prompted.</p>
+          </div>
+        </div>
+
+        <div class="nearby-section">
+          <!-- Hospital cards list -->
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-4)">
+              <h2 style="font-size:var(--fs-lg);font-weight:700">Hospitals Near You</h2>
+              <span class="badge badge-normal" id="hospitals-count">0 found</span>
+            </div>
+            <div class="hospital-cards-list" id="hospitals-list">
+              <div class="loading-state"><div class="spinner"></div><span>Locating nearby hospitals…</span></div>
+            </div>
+          </div>
+
+          <!-- Map -->
+          <div class="card map-wrap">
+            <div class="card-header"><h3 class="card-title">🗺️ Hospital Map</h3></div>
+            <div class="card-body no-pad">
+              <div id="patient-map" style="height:480px;border-radius:0 0 var(--r-xl) var(--r-xl)"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: MY REQUESTS
+           ===================================================== -->
+      <section id="sec-requests" class="section">
+        <div class="patient-requests-header">
+          <h2 style="font-size:var(--fs-xl);font-weight:700">My Requests</h2>
+          <button class="btn btn-primary btn-sm" onclick="PatientRequests.openNewRequestModal()">+ New Request</button>
+        </div>
+        <div id="patient-requests-list">
+          <div class="loading-state"><div class="spinner"></div></div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: PROFILE
+           ===================================================== -->
+      <section id="sec-profile" class="section">
+        <div class="patient-profile-card">
+          <div class="patient-profile-header">
+            <div class="patient-profile-avatar" id="patient-profile-avatar">P</div>
+            <div style="color:#fff">
+              <div style="font-size:var(--fs-2xl);font-weight:800;margin-bottom:var(--sp-1)" id="patient-profile-name">—</div>
+              <div style="font-size:var(--fs-sm);opacity:0.7">Patient Account</div>
+            </div>
+          </div>
+          <div class="profile-body">
+            <div class="form-row">
+              <div class="profile-field">
+                <div class="profile-field-label">Email Address</div>
+                <div class="profile-field-value" id="patient-profile-email">—</div>
+              </div>
+              <div class="profile-field">
+                <div class="profile-field-label">Phone</div>
+                <div class="profile-field-value" id="patient-profile-phone">—</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="profile-field">
+                <div class="profile-field-label">Date of Birth</div>
+                <div class="profile-field-value" id="patient-profile-dob">—</div>
+              </div>
+              <div class="profile-field">
+                <div class="profile-field-label">Blood Group</div>
+                <div class="profile-field-value" id="patient-profile-blood">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Modal: New Patient Request -->
+<div class="modal-overlay hidden" id="modal-patient-request">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Submit Resource Request</h3>
+      <button class="modal-close" onclick="Modal.close('modal-patient-request')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="patient-request-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="pr-resource">Resource Type <span class="req">*</span></label>
+          <select id="pr-resource" name="resource" class="form-control">
+            <option value="">Select resource…</option>
+            <option value="Emergency Bed">Emergency Bed</option>
+            <option value="ICU Bed">ICU Bed</option>
+            <option value="General Bed">General Bed</option>
+            <option value="Ambulance">Ambulance</option>
+            <option value="Blood">Blood</option>
+            <option value="Ventilator">Ventilator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="pr-priority">Urgency Level</label>
+          <select id="pr-priority" name="priority" class="form-control">
+            <option value="LOW">Low — Not Urgent</option>
+            <option value="MEDIUM">Medium — Needed Soon</option>
+            <option value="HIGH" selected>High — Urgent</option>
+            <option value="CRITICAL">Critical — Life-Threatening</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="pr-notes">Additional Notes</label>
+          <textarea id="pr-notes" name="notes" class="form-control" rows="3" placeholder="Any relevant medical details…"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('modal-patient-request')">Cancel</button>
+      <button class="btn btn-primary" onclick="PatientRequests.submitRequest(event)">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Confirm -->
+<div class="modal-overlay hidden" id="modal-confirm">
+  <div class="modal modal-sm">
+    <div class="modal-body confirm-body">
+      <div class="confirm-icon" id="confirm-icon">❓</div>
+      <div class="confirm-title" id="confirm-title">Are you sure?</div>
+      <div class="confirm-msg" id="confirm-msg"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+      <button class="btn btn-primary" id="confirm-ok-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/patient.js"></script>
+</body>
+</html>

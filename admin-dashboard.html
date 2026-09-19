@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediSync — Admin Dashboard</title>
+  <meta name="description" content="MediSync Admin Portal — network-wide hospital resource monitoring.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body class="portal-admin">
+<div id="toast-container"></div>
+
+<!-- Network critical strip -->
+<div id="network-critical-strip" class="critical-strip hidden">
+  <div class="pulse-dot"></div>
+  <span class="strip-text"></span>
+</div>
+
+<div id="admin-dashboard" class="app-layout">
+
+  <!-- =========================================================
+       SIDEBAR
+       ========================================================= -->
+  <nav class="sidebar admin-sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">⚙️</div>
+      <div class="sidebar-logo-text">
+        <div class="sidebar-logo-name">MediSync</div>
+        <div class="sidebar-logo-tag">Admin Portal</div>
+      </div>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-avatar">A</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebar-user-name">Loading…</div>
+        <div class="sidebar-user-role">Network Admin</div>
+      </div>
+    </div>
+
+    <ul class="sidebar-nav" role="navigation">
+      <li class="nav-sect">Network</li>
+      <li><button class="nav-item" data-section="overview">
+        <span class="nav-icon">🌐</span>Network Overview
+      </button></li>
+      <li><button class="nav-item" data-section="map">
+        <span class="nav-icon">🗺️</span>Network Map
+      </button></li>
+
+      <li class="nav-sect">Insights</li>
+      <li><button class="nav-item" data-section="analytics">
+        <span class="nav-icon">📊</span>Analytics
+      </button></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="nav-item" data-section="profile">
+        <span class="nav-icon">👤</span>Profile
+      </button>
+      <button class="nav-item" id="logout-btn">
+        <span class="nav-icon">🚪</span>Log Out
+      </button>
+    </div>
+  </nav>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- =========================================================
+       MAIN CONTENT
+       ========================================================= -->
+  <div class="main-content">
+    <header class="page-header">
+      <div class="page-header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+        <div>
+          <h1 class="page-title" id="page-title">Network Overview</h1>
+          <p class="page-subtitle" id="page-subtitle">All hospitals in the MediSync network</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- =====================================================
+           SECTION: NETWORK OVERVIEW
+           ===================================================== -->
+      <section id="sec-overview" class="section">
+        <!-- Network header stats -->
+        <div class="network-overview-header">
+          <div class="network-stat-big">
+            <div class="network-stat-big-value" id="stat-total-hospitals">—</div>
+            <div class="network-stat-big-label">Total Hospitals</div>
+          </div>
+          <div class="network-stat-big">
+            <div class="network-stat-big-value" id="stat-available-beds">—</div>
+            <div class="network-stat-big-label">Available Beds</div>
+          </div>
+          <div class="network-stat-big">
+            <div class="network-stat-big-value" id="stat-active-requests">—</div>
+            <div class="network-stat-big-label">Active Requests</div>
+          </div>
+          <div class="network-stat-big">
+            <div class="network-stat-big-value" id="stat-fulfilled-today">—</div>
+            <div class="network-stat-big-label">Fulfilled Today</div>
+          </div>
+          <div class="network-stat-big">
+            <div class="network-stat-big-value" id="stat-network-util">—</div>
+            <div class="network-stat-big-label">Network Utilization</div>
+          </div>
+          <div class="network-status-breakdown">
+            <div class="network-status-item">
+              <span class="status-dot normal"></span>
+              <span class="count" id="stat-normal-hospitals">—</span> Normal
+            </div>
+            <div class="network-status-item">
+              <span class="status-dot low"></span>
+              <span class="count" id="stat-low-hospitals">—</span> Low
+            </div>
+            <div class="network-status-item">
+              <span class="status-dot critical"></span>
+              <span class="count" id="stat-critical-hospitals">—</span> Critical
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts panel -->
+        <div class="admin-alerts-panel">
+          <div class="admin-alerts-title">🚨 Critical Network Alerts</div>
+          <div id="admin-alerts-list">
+            <div class="admin-alert-item">
+              <div class="admin-alert-icon">⏳</div>
+              <div class="admin-alert-body">
+                <div class="admin-alert-title">Loading network status…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hospitals table -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">All Hospitals</h2>
+          </div>
+          <div class="card-body no-pad">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Hospital</th>
+                    <th>Status</th>
+                    <th>ICU Beds</th>
+                    <th>Emergency</th>
+                    <th>General</th>
+                    <th>Ventilators</th>
+                    <th>Blood</th>
+                    <th>Last Updated</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-hospitals-tbody">
+                  <tr><td colspan="9"><div class="loading-state"><div class="spinner"></div><span>Loading hospitals…</span></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: NETWORK MAP
+           ===================================================== -->
+      <section id="sec-map" class="section">
+        <div class="admin-map-layout">
+          <div class="card">
+            <div class="card-header"><h2 class="card-title">🗺️ Live Network Map</h2></div>
+            <div class="card-body no-pad">
+              <div id="admin-map" style="height:520px;border-radius:0 0 var(--r-xl) var(--r-xl)"></div>
+            </div>
+          </div>
+          <div>
+            <div class="map-legend">
+              <div class="map-legend-title">Status Legend</div>
+              <div class="map-legend-item">
+                <div class="map-legend-color" style="background:#22C55E"></div>
+                <span>Normal — resources adequate</span>
+              </div>
+              <div class="map-legend-item">
+                <div class="map-legend-color" style="background:#F59E0B"></div>
+                <span>Low — resources running low</span>
+              </div>
+              <div class="map-legend-item">
+                <div class="map-legend-color" style="background:#EF4444"></div>
+                <span>Critical — urgent attention needed</span>
+              </div>
+            </div>
+
+            <!-- Quick stats card -->
+            <div class="card" style="margin-top:var(--sp-4)">
+              <div class="card-header"><h3 class="card-title">Network Snapshot</h3></div>
+              <div class="card-body">
+                <div style="display:flex;flex-direction:column;gap:var(--sp-4)">
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-sm)">
+                    <span style="color:var(--color-text-muted)">Total Hospitals</span>
+                    <strong id="map-stat-hospitals">—</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-sm)">
+                    <span style="color:var(--color-text-muted)">Network Utilization</span>
+                    <strong id="map-stat-util">—</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-sm)">
+                    <span style="color:var(--color-text-muted)">Active Requests</span>
+                    <strong id="map-stat-requests">—</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: ANALYTICS
+           ===================================================== -->
+      <section id="sec-analytics" class="section">
+        <div class="section-head">
+          <h2 class="section-title">Network Analytics</h2>
+        </div>
+
+        <div class="admin-analytics-grid">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Network Utilization Trend</h3></div>
+            <div class="card-body"><div class="chart-wrap-tall"><canvas id="chart-network-util"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Hospital Status Distribution</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="chart-hospital-status"></canvas></div></div>
+          </div>
+        </div>
+
+        <div class="admin-analytics-row-2">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Request Volume (7 Days)</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="chart-network-volume"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Fulfillment Rate</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="chart-fulfillment"></canvas></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: PROFILE
+           ===================================================== -->
+      <section id="sec-profile" class="section">
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar-lg" id="admin-profile-avatar">A</div>
+            <div class="profile-header-info">
+              <div class="profile-name" id="admin-profile-name">—</div>
+              <div class="profile-role">
+                <span class="admin-badge" id="admin-profile-role">Admin</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-body">
+            <div class="form-row">
+              <div class="profile-field">
+                <div class="profile-field-label">Email Address</div>
+                <div class="profile-field-value" id="admin-profile-email">—</div>
+              </div>
+              <div class="profile-field">
+                <div class="profile-field-label">Admin ID</div>
+                <div class="profile-field-value" id="admin-profile-id">—</div>
+              </div>
+            </div>
+            <div class="profile-field">
+              <div class="profile-field-label">Access Scope</div>
+              <div class="profile-field-value">Read-only network oversight — all hospitals in MediSync network</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Confirm -->
+<div class="modal-overlay hidden" id="modal-confirm">
+  <div class="modal modal-sm">
+    <div class="modal-body confirm-body">
+      <div class="confirm-icon" id="confirm-icon">❓</div>
+      <div class="confirm-title" id="confirm-title">Are you sure?</div>
+      <div class="confirm-msg" id="confirm-msg"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+      <button class="btn btn-primary" id="confirm-ok-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

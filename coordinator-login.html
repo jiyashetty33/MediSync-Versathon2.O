@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coordinator Login — MediSync</title>
+  <meta name="description" content="Coordinator login for MediSync Smart Hospital Resource Coordination platform.">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/coordinator.css">
+</head>
+
+<body class="coord-login-body">
+  <div id="toast-container"></div>
+
+  <div class="login-wrap">
+    <!-- Form panel -->
+    <div class="login-panel">
+      <div class="login-brand">
+        <div class="login-brand-logo">
+          <div class="login-brand-icon">🏥</div>
+          <div>
+            <div class="login-brand-name">MediSync</div>
+            <div class="login-brand-tag">Care Connected. Lives Protected.</div>
+          </div>
+        </div>
+        <h1 class="login-title">Coordinator Login</h1>
+        <p class="login-sub">Sign in to manage your hospital's resources</p>
+      </div>
+
+      <div class="login-form">
+        <div class="demo-hint">
+          <div class="demo-hint-title">🧪 Demo Mode</div>
+          <div class="demo-hint-text">Hospital ID: <code>H001</code> · Email &amp; Password: any value</div>
+        </div>
+
+        <div id="login-error" class="error-msg hidden"></div>
+
+        <form id="coord-login-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="hospital-id">Hospital ID <span class="req">*</span></label>
+            <input type="text" id="hospital-id" name="hospitalId" class="form-control" placeholder="e.g. H001"
+              value="H001" autocomplete="off">
+            <div class="form-help">Your hospital's unique identifier in the MediSync network</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address <span class="req">*</span></label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="coordinator@hospital.in"
+              value="priya.shetty@kmchospital.in" autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password <span class="req">*</span></label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="••••••••"
+              value="demo1234" autocomplete="current-password">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg w-full"
+            style="justify-content:center;margin-top:var(--sp-2)">
+            Sign In to Coordinator Portal
+          </button>
+        </form>
+
+        <div class="login-divider"><span>or</span></div>
+        <div class="login-footer-link"><a href="index.html">← Back to Portal Selection</a></div>
+      </div>
+    </div>
+
+    <!-- Info panel -->
+    <div class="login-info">
+      <h2 class="login-info-title">Hospital Resource Management</h2>
+      <p class="login-info-desc">The Coordinator Portal gives you complete visibility and control over your hospital's
+        resources, emergency requests, and network connections.</p>
+      <div class="login-info-feature">
+        <div class="login-info-feature-icon">📊</div>
+        <div class="login-info-feature-text"><strong>Real-Time Resource Dashboard</strong>Beds, ICU, ventilators, blood
+          inventory — updated every 5 seconds.</div>
+      </div>
+      <div class="login-info-feature">
+        <div class="login-info-feature-icon">🚨</div>
+        <div class="login-info-feature-text"><strong>Emergency Coordination</strong>Send and receive emergency resource
+          requests across the hospital network.</div>
+      </div>
+      <div class="login-info-feature">
+        <div class="login-info-feature-icon">🗺️</div>
+        <div class="login-info-feature-text"><strong>Network Map</strong>All connected hospitals on a live map with
+          status indicators.</div>
+      </div>
+      <div class="login-info-feature">
+        <div class="login-info-feature-icon">⚡</div>
+        <div class="login-info-feature-text"><strong>Emergency Mode</strong>One-click switch to a high-urgency view for
+          rapid crisis response.</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/resources.js"></script>
+  <script src="js/coordinator.js"></script>
+</body>
+
+</html>

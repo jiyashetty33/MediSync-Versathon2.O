@@ -1,0 +1,877 @@
+/* ============================================================
+   H4 — responsive.css
+   MediSync — Mobile & Tablet Responsive Styles
+   ============================================================ */
+
+
+/* ============================================================
+   TABLET — ≤ 1024px
+   ============================================================ */
+
+@media (max-width: 1024px) {
+
+  :root {
+    --sidebar-width: 240px;
+  }
+
+
+  /* ----------------------------------------------------------
+     Coordinator Dashboard
+     ---------------------------------------------------------- */
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Hospital Network
+     ---------------------------------------------------------- */
+
+  .network-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .network-layout .map-wrap {
+    order: -1;
+  }
+
+  #network-map {
+    height: 320px;
+  }
+
+
+  /* ----------------------------------------------------------
+     Analytics
+     ---------------------------------------------------------- */
+
+  .analytics-charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Emergency Mode
+     ---------------------------------------------------------- */
+
+  .emergency-mode-body {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Admin Analytics
+     ---------------------------------------------------------- */
+
+  .admin-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-analytics-row-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-map-layout {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Patient Nearby Hospitals
+     ---------------------------------------------------------- */
+
+  .nearby-section {
+    grid-template-columns: 1fr;
+  }
+
+  #patient-map {
+    height: 280px;
+  }
+
+
+  /* ----------------------------------------------------------
+     Forms
+     ---------------------------------------------------------- */
+
+  .form-row-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE — ≤ 768px
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  :root {
+    --header-height: 56px;
+    --sp-8: 1.25rem;
+  }
+
+
+  /* ----------------------------------------------------------
+     Typography
+     ---------------------------------------------------------- */
+
+  h1 {
+    font-size: var(--fs-2xl);
+  }
+
+  h2 {
+    font-size: var(--fs-xl);
+  }
+
+
+  /* ----------------------------------------------------------
+     Sidebar
+     ---------------------------------------------------------- */
+
+  .sidebar {
+    transform: translateX(-100%);
+
+    width: 280px;
+
+    box-shadow:
+      0 10px 30px rgba(11, 59, 102, 0.18);
+
+    z-index: 200;
+
+    transition:
+      transform var(--t-base);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+
+  /* Mobile sidebar overlay */
+
+  .sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background:
+      rgba(11, 59, 102, 0.35);
+
+    backdrop-filter:
+      blur(2px);
+
+    z-index: 199;
+
+    display: none;
+  }
+
+  .sidebar-overlay.visible {
+    display: block;
+  }
+
+
+  /* ----------------------------------------------------------
+     Main Content
+     ---------------------------------------------------------- */
+
+  .main-content {
+    margin-left: 0;
+  }
+
+
+  .sidebar-toggle {
+    display: flex;
+  }
+
+
+  .page-content {
+    padding: var(--sp-5);
+  }
+
+  .page-header {
+    padding:
+      0 var(--sp-5);
+  }
+
+
+  /* ----------------------------------------------------------
+     Resource Grid
+     ---------------------------------------------------------- */
+
+  .resource-grid {
+    grid-template-columns:
+      repeat(auto-fill,
+        minmax(160px, 1fr));
+
+    gap: var(--sp-3);
+  }
+
+
+  /* ----------------------------------------------------------
+     Statistics
+     ---------------------------------------------------------- */
+
+  .stats-row {
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: var(--sp-3);
+  }
+
+
+  /* ----------------------------------------------------------
+     Resource Card Stats
+     ---------------------------------------------------------- */
+
+  .res-card-stats {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+
+  /* ----------------------------------------------------------
+     Section Header
+     ---------------------------------------------------------- */
+
+  .section-head {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+  }
+
+  .section-head-actions {
+    width: 100%;
+
+    flex-wrap: wrap;
+  }
+
+  .section-head-actions .btn {
+    flex: 1;
+
+    justify-content:
+      center;
+  }
+
+
+  /* ----------------------------------------------------------
+     Forms
+     ---------------------------------------------------------- */
+
+  .form-row {
+    grid-template-columns:
+      1fr;
+  }
+
+  .form-row-3 {
+    grid-template-columns:
+      1fr;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Tables
+     ---------------------------------------------------------- */
+
+  .table-wrap {
+    border-radius:
+      var(--r-lg);
+
+    overflow-x:
+      auto;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+  .data-table {
+    min-width:
+      650px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding:
+      var(--sp-3);
+  }
+
+
+  /* ----------------------------------------------------------
+     Modals
+     ---------------------------------------------------------- */
+
+  .modal-overlay {
+    align-items:
+      flex-end;
+
+    padding:
+      0;
+  }
+
+  .modal {
+    width: 100%;
+
+    border-radius:
+      var(--r-2xl) var(--r-2xl) 0 0;
+
+    max-width:
+      100%;
+
+    max-height:
+      92vh;
+
+    overflow-y:
+      auto;
+  }
+
+  .modal-lg,
+  .modal-sm {
+    max-width:
+      100%;
+  }
+
+
+  /* ----------------------------------------------------------
+     Tabs
+     ---------------------------------------------------------- */
+
+  .tabs {
+    overflow-x:
+      auto;
+
+    flex-wrap:
+      nowrap;
+
+    -webkit-overflow-scrolling:
+      touch;
+
+    scrollbar-width:
+      none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+
+  /* ----------------------------------------------------------
+     Toast Notifications
+     ---------------------------------------------------------- */
+
+  #toast-container {
+    left:
+      var(--sp-4);
+
+    right:
+      var(--sp-4);
+
+    top:
+      auto;
+
+    bottom:
+      var(--sp-4);
+  }
+
+  .toast {
+    min-width:
+      unset;
+
+    max-width:
+      unset;
+
+    width:
+      100%;
+  }
+
+
+  /* ----------------------------------------------------------
+     Dashboard
+     ---------------------------------------------------------- */
+
+  .dashboard-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .dashboard-side {
+    flex-direction:
+      row;
+
+    flex-wrap:
+      wrap;
+  }
+
+  .dashboard-side .card {
+    flex:
+      1 1 100%;
+  }
+
+
+  /* ----------------------------------------------------------
+     Network
+     ---------------------------------------------------------- */
+
+  .network-layout {
+    grid-template-columns:
+      1fr;
+  }
+
+  #network-map,
+  #admin-map {
+    height:
+      280px;
+  }
+
+
+  /* ----------------------------------------------------------
+     Emergency Mode
+     ---------------------------------------------------------- */
+
+  .emergency-mode-layout {
+    padding:
+      var(--sp-5);
+  }
+
+  .emergency-mode-body {
+    grid-template-columns:
+      1fr;
+
+    gap:
+      var(--sp-4);
+  }
+
+  .emergency-mode-title {
+    font-size:
+      var(--fs-xl);
+  }
+
+
+  /* ----------------------------------------------------------
+     Patient Nearby Hospitals
+     ---------------------------------------------------------- */
+
+  .nearby-section {
+    grid-template-columns:
+      1fr;
+  }
+
+  .nearby-hospital-resources {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+
+  /* ----------------------------------------------------------
+     Profile Cards
+     ---------------------------------------------------------- */
+
+  .profile-card {
+    max-width:
+      100%;
+  }
+
+  .profile-header {
+    flex-direction:
+      column;
+
+    text-align:
+      center;
+
+    padding:
+      var(--sp-8);
+  }
+
+  .patient-profile-header {
+    flex-direction:
+      column;
+
+    text-align:
+      center;
+
+    padding:
+      var(--sp-8);
+  }
+
+
+  /* ----------------------------------------------------------
+     Admin Analytics
+     ---------------------------------------------------------- */
+
+  .admin-analytics-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-analytics-row-2 {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-map-layout {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Network Overview
+     ---------------------------------------------------------- */
+
+  .network-overview-header {
+    flex-direction:
+      column;
+
+    text-align:
+      center;
+
+    gap:
+      var(--sp-4);
+  }
+
+  .network-status-breakdown {
+    margin-left:
+      0;
+
+    justify-content:
+      center;
+  }
+
+
+  /* ----------------------------------------------------------
+     Resource Edit Cards
+     ---------------------------------------------------------- */
+
+  .resource-edit-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .res-update-form {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Analytics
+     ---------------------------------------------------------- */
+
+  .analytics-charts-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .chart-wrap,
+  .chart-wrap-tall {
+    height:
+      220px;
+  }
+
+
+  /* ----------------------------------------------------------
+     Hospital Context
+     ---------------------------------------------------------- */
+
+  .hospital-context {
+    display:
+      none;
+  }
+
+  .header-hospital-info {
+    gap:
+      var(--sp-2);
+  }
+
+
+  /* ----------------------------------------------------------
+     Admin Alerts
+     ---------------------------------------------------------- */
+
+  .admin-alerts-panel {
+    padding:
+      var(--sp-4);
+  }
+
+
+  /* ----------------------------------------------------------
+     Map Legend
+     ---------------------------------------------------------- */
+
+  .admin-map-layout {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Mobile Only Elements
+     ---------------------------------------------------------- */
+
+  .mobile-only {
+    display:
+      block;
+  }
+
+
+  /* ----------------------------------------------------------
+     Emergency Broadcast Button
+     ---------------------------------------------------------- */
+
+  .broadcast-btn {
+    padding:
+      var(--sp-5);
+
+    font-size:
+      var(--fs-lg);
+  }
+
+
+  /* ----------------------------------------------------------
+     Mini Requests
+     ---------------------------------------------------------- */
+
+  .mini-request {
+    padding:
+      var(--sp-3);
+  }
+
+
+  /* ----------------------------------------------------------
+     Resource History
+     ---------------------------------------------------------- */
+
+  .history-action-badge {
+    padding:
+      1px 6px;
+  }
+
+
+  /* ----------------------------------------------------------
+     Patient Request Cards
+     ---------------------------------------------------------- */
+
+  .patient-request-card {
+    flex-direction:
+      column;
+  }
+
+
+  /* ----------------------------------------------------------
+     New Patient Request Types
+     ---------------------------------------------------------- */
+
+  .new-request-types {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE — ≤ 480px
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+  /* ----------------------------------------------------------
+     Statistics
+     ---------------------------------------------------------- */
+
+  .stats-row {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Resources
+     ---------------------------------------------------------- */
+
+  .resource-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .nearby-hospital-resources {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+
+  /* ----------------------------------------------------------
+     Patient Request Types
+     ---------------------------------------------------------- */
+
+  .new-request-types {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Resource Edit Stats
+     ---------------------------------------------------------- */
+
+  .res-edit-current {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+
+  /* ----------------------------------------------------------
+     Landing Page
+     ---------------------------------------------------------- */
+
+  .landing-hero-title {
+    font-size:
+      var(--fs-2xl) !important;
+  }
+
+  .portal-cards {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .features-grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  /* ----------------------------------------------------------
+     Login Cards
+     ---------------------------------------------------------- */
+
+  .admin-login-card,
+  .patient-login-card {
+    margin:
+      var(--sp-4);
+
+    padding:
+      var(--sp-6);
+  }
+
+
+  /* ----------------------------------------------------------
+     Header
+     ---------------------------------------------------------- */
+
+  .page-header {
+    min-height:
+      var(--header-height);
+  }
+
+
+  /* ----------------------------------------------------------
+     Emergency Title
+     ---------------------------------------------------------- */
+
+  .emergency-mode-title {
+    font-size:
+      var(--fs-lg);
+
+    gap:
+      var(--sp-2);
+  }
+
+
+  /* ----------------------------------------------------------
+     Location Banner
+     ---------------------------------------------------------- */
+
+  .location-banner {
+    padding:
+      var(--sp-4);
+
+    align-items:
+      flex-start;
+  }
+
+
+  /* ----------------------------------------------------------
+     Patient Request
+     ---------------------------------------------------------- */
+
+  .patient-request-card {
+    padding:
+      var(--sp-4);
+  }
+
+}
+
+
+/* ============================================================
+   VERY SMALL SCREENS — ≤ 360px
+   ============================================================ */
+
+@media (max-width: 360px) {
+
+  .page-content {
+    padding:
+      var(--sp-4);
+  }
+
+  .stats-row {
+    grid-template-columns:
+      1fr;
+  }
+
+  .nearby-hospital-resources {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .res-edit-current {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .section-head-actions {
+    flex-direction:
+      column;
+  }
+
+  .section-head-actions .btn {
+    width:
+      100%;
+  }
+
+}
+
+
+/* ============================================================
+   PRINT — HACKATHON DEMO SAFEGUARD
+   ============================================================ */
+
+@media print {
+
+  .sidebar,
+  .sidebar-toggle,
+  #toast-container,
+  .modal-overlay {
+    display:
+      none !important;
+  }
+
+  .main-content {
+    margin-left:
+      0;
+  }
+
+  .page-header {
+    position:
+      static;
+  }
+
+}

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediSync — Coordinator Dashboard</title>
+  <meta name="description" content="MediSync Coordinator Portal — manage hospital resources and emergency coordination.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/coordinator.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body class="portal-coordinator">
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- Critical strip (hidden by default) -->
+<div id="critical-strip" class="critical-strip hidden">
+  <div class="pulse-dot"></div>
+  <span class="strip-text"></span>
+</div>
+
+<!-- App layout -->
+<div id="coord-dashboard" class="app-layout">
+
+  <!-- =========================================================
+       SIDEBAR
+       ========================================================= -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🏥</div>
+      <div class="sidebar-logo-text">
+        <div class="sidebar-logo-name">MediSync</div>
+        <div class="sidebar-logo-tag">Coordinator Portal</div>
+      </div>
+    </div>
+
+    <!-- User info -->
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-avatar">C</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebar-user-name">Loading…</div>
+        <div class="sidebar-user-role" id="sidebar-user-role">Coordinator</div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <ul class="sidebar-nav" role="navigation">
+      <li class="nav-sect">Overview</li>
+      <li><button class="nav-item" data-section="dashboard">
+        <span class="nav-icon">📊</span>Dashboard
+      </button></li>
+
+      <li class="nav-sect">Resources</li>
+      <li><button class="nav-item" data-section="resources">
+        <span class="nav-icon">🛏️</span>Resource Management
+      </button></li>
+      <li><button class="nav-item" data-section="history">
+        <span class="nav-icon">📋</span>Resource History
+      </button></li>
+
+      <li class="nav-sect">Network</li>
+      <li><button class="nav-item" data-section="emergency">
+        <span class="nav-icon">🚨</span>Emergency Requests
+        <span class="nav-badge hidden" id="emergency-nav-badge">0</span>
+      </button></li>
+      <li><button class="nav-item" data-section="network">
+        <span class="nav-icon">🗺️</span>Hospital Network
+      </button></li>
+
+      <li class="nav-sect">Insights</li>
+      <li><button class="nav-item" data-section="analytics">
+        <span class="nav-icon">📈</span>Analytics
+      </button></li>
+      <li><button class="nav-item" data-section="notifications">
+        <span class="nav-icon">🔔</span>Notifications
+        <span class="nav-badge hidden" id="notif-nav-badge">0</span>
+      </button></li>
+
+      <li class="nav-sect">Actions</li>
+      <li><button class="nav-item emergency-mode-nav" data-section="emergency-mode">
+        <span class="nav-icon">⚡</span>Emergency Mode
+      </button></li>
+    </ul>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+      <button class="nav-item" data-section="profile">
+        <span class="nav-icon">👤</span>Profile
+      </button>
+      <button class="nav-item" id="logout-btn">
+        <span class="nav-icon">🚪</span>Log Out
+      </button>
+    </div>
+  </nav>
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- =========================================================
+       MAIN CONTENT
+       ========================================================= -->
+  <div class="main-content">
+
+    <!-- Page header -->
+    <header class="page-header">
+      <div class="page-header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+        <div>
+          <h1 class="page-title" id="page-title">Dashboard</h1>
+          <p class="page-subtitle" id="page-subtitle">Overview of your hospital</p>
+        </div>
+      </div>
+      <div class="page-header-right header-hospital-info">
+        <div class="hospital-context">
+          <div>
+            <div class="hospital-context-name" id="ctx-hospital-name">—</div>
+            <div class="hospital-context-id" id="ctx-hospital-id"></div>
+          </div>
+        </div>
+        <div class="header-user-chip">
+          <div class="header-avatar" id="ctx-coord-name">—</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="page-content">
+
+      <!-- =====================================================
+           SECTION: DASHBOARD
+           ===================================================== -->
+      <section id="sec-dashboard" class="section">
+        <!-- Stats row -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-icon">🛏️</div>
+            <div class="stat-card-body">
+              <div class="stat-value" id="stat-total-available">—</div>
+              <div class="stat-label">Total Available</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">🏥</div>
+            <div class="stat-card-body">
+              <div class="stat-value" id="stat-total-beds">—</div>
+              <div class="stat-label">Total Capacity</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">🚨</div>
+            <div class="stat-card-body">
+              <div class="stat-value" id="stat-active-requests">—</div>
+              <div class="stat-label">Active Requests</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div id="dash-alerts"></div>
+
+        <!-- Main grid -->
+        <div class="dashboard-grid">
+          <div class="dashboard-main">
+            <!-- Resource grid -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Resource Overview</h2>
+                <button class="btn btn-sm btn-primary" onclick="CoordNav.navigate('resources')">Manage →</button>
+              </div>
+              <div class="card-body">
+                <div class="resource-grid" id="dash-resource-grid">
+                  <div class="loading-state"><div class="spinner"></div><span>Loading resources…</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-side">
+            <!-- Active requests -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Active Requests</h3>
+                <button class="btn btn-sm btn-outline-primary" onclick="CoordNav.navigate('emergency')">View All</button>
+              </div>
+              <div class="card-body">
+                <div class="active-requests-list" id="dash-active-requests">
+                  <div class="loading-state" style="padding:var(--sp-6)"><div class="spinner spinner-sm"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: RESOURCE MANAGEMENT
+           ===================================================== -->
+      <section id="sec-resources" class="section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Resource Management</h2>
+            <p class="section-desc">Update your hospital's real-time resource availability</p>
+          </div>
+        </div>
+        <div class="resource-edit-grid" id="res-edit-grid">
+          <div class="loading-state"><div class="spinner"></div><span>Loading resources…</span></div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: EMERGENCY REQUESTS
+           ===================================================== -->
+      <section id="sec-emergency" class="section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Emergency Requests</h2>
+            <p class="section-desc">Incoming and outgoing resource requests</p>
+          </div>
+          <div class="section-head-actions">
+            <button class="btn btn-primary" id="btn-new-request">+ New Request</button>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="card" style="margin-bottom:var(--sp-5)">
+          <div class="card-header">
+            <h3 class="card-title">📥 Incoming Requests</h3>
+          </div>
+          <div class="card-body no-pad">
+            <div id="incoming-requests-body"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">📤 Outgoing Requests</h3>
+          </div>
+          <div class="card-body no-pad">
+            <div id="outgoing-requests-body"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: HOSPITAL NETWORK
+           ===================================================== -->
+      <section id="sec-network" class="section">
+        <div class="section-head">
+          <h2 class="section-title">Hospital Network</h2>
+        </div>
+        <div class="network-layout">
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Connected Hospitals</h3>
+                <div id="network-loading" class="hidden" style="font-size:var(--fs-xs);color:var(--color-text-muted)">Loading…</div>
+              </div>
+              <div class="card-body no-pad">
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th><th>Hospital</th><th>Status</th>
+                        <th>ICU</th><th>Emergency</th><th>General</th>
+                        <th>Ventilators</th><th>Updated</th>
+                      </tr>
+                    </thead>
+                    <tbody id="network-table-body">
+                      <tr><td colspan="8"><div class="loading-state"><div class="spinner"></div></div></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="map-wrap">
+            <div class="card">
+              <div class="card-header"><h3 class="card-title">🗺️ Network Map</h3></div>
+              <div class="card-body no-pad">
+                <div id="network-map" style="height:380px;border-radius:0 0 var(--r-xl) var(--r-xl)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: NOTIFICATIONS
+           ===================================================== -->
+      <section id="sec-notifications" class="section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Notifications</h2>
+            <p class="section-desc"><span id="notif-unread-count"></span></p>
+          </div>
+          <div class="section-head-actions">
+            <button class="btn btn-secondary btn-sm" id="btn-mark-all-read">Mark All Read</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body no-pad">
+            <div id="notif-list">
+              <div class="loading-state"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: ANALYTICS
+           ===================================================== -->
+      <section id="sec-analytics" class="section">
+        <div class="section-head">
+          <h2 class="section-title">Analytics</h2>
+        </div>
+        <div class="analytics-charts-grid">
+          <div class="card analytics-chart-full">
+            <div class="card-header"><h3 class="card-title">Utilization Trend (7 Days)</h3></div>
+            <div class="card-body"><div class="chart-wrap-tall"><canvas id="chart-util-trend"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Request Volume</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="chart-req-volume"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Status Breakdown</h3></div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="chart-status-breakdown"></canvas></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: RESOURCE HISTORY
+           ===================================================== -->
+      <section id="sec-history" class="section">
+        <div class="section-head">
+          <h2 class="section-title">Resource History</h2>
+        </div>
+        <div class="card">
+          <div class="card-body no-pad">
+            <div id="history-loading" class="loading-state hidden"><div class="spinner"></div></div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Resource</th><th>Action</th><th>Change</th><th>Reason</th><th>Coordinator</th><th>Timestamp</th></tr>
+                </thead>
+                <tbody id="history-table-body">
+                  <tr><td colspan="6"><div class="loading-state"><div class="spinner"></div></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: EMERGENCY MODE
+           ===================================================== -->
+      <section id="sec-emergency-mode" class="section">
+        <div class="emergency-mode-layout">
+          <div class="emergency-mode-header">
+            <div class="emergency-mode-title">
+              <div class="emergency-mode-indicator"></div>
+              Emergency Mode
+            </div>
+            <button class="btn btn-danger" id="btn-broadcast-emergency">🚨 Broadcast Critical Request</button>
+          </div>
+          <div class="emergency-mode-body">
+            <div class="emergency-mode-panel">
+              <div class="emergency-panel-title">Critical Incoming Requests</div>
+              <div id="emerg-mode-critical-list">
+                <div class="loading-state" style="color:rgba(255,255,255,0.5)"><div class="spinner"></div></div>
+              </div>
+            </div>
+            <div class="emergency-mode-panel">
+              <div class="emergency-panel-title">Quick Actions</div>
+              <button class="broadcast-btn" id="btn-broadcast-emergency-2" onclick="document.getElementById('btn-broadcast-emergency').click()">
+                🚨 BROADCAST EMERGENCY REQUEST
+              </button>
+              <p style="font-size:var(--fs-xs);color:rgba(255,255,255,0.5);text-align:center;margin-top:var(--sp-3)">
+                Sends a CRITICAL priority request to all network hospitals
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SECTION: PROFILE
+           ===================================================== -->
+      <section id="sec-profile" class="section">
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar-lg" id="profile-avatar">C</div>
+            <div class="profile-header-info">
+              <div class="profile-name" id="profile-name">—</div>
+              <div class="profile-role">Hospital Coordinator</div>
+            </div>
+          </div>
+          <div class="profile-body">
+            <div class="form-row">
+              <div class="profile-field">
+                <div class="profile-field-label">Email Address</div>
+                <div class="profile-field-value" id="profile-email">—</div>
+              </div>
+              <div class="profile-field">
+                <div class="profile-field-label">Hospital Name</div>
+                <div class="profile-field-value" id="profile-hospital">—</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="profile-field">
+                <div class="profile-field-label">Hospital ID</div>
+                <div class="profile-field-value" id="profile-hospital-id">—</div>
+              </div>
+              <div class="profile-field">
+                <div class="profile-field-label">Hospital Type</div>
+                <div class="profile-field-value" id="profile-hospital-type">—</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="profile-field">
+                <div class="profile-field-label">Area / Location</div>
+                <div class="profile-field-value" id="profile-area">—</div>
+              </div>
+              <div class="profile-field">
+                <div class="profile-field-label">Hospital Phone</div>
+                <div class="profile-field-value" id="profile-phone">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main><!-- /page-content -->
+  </div><!-- /main-content -->
+</div><!-- /app-layout -->
+
+
+<!-- =============================================================
+     MODALS
+     ============================================================= -->
+
+<!-- Modal: Update Resource -->
+<div class="modal-overlay hidden" id="modal-update-resource">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3 id="modal-res-title">Update Resource</h3>
+      <button class="modal-close" onclick="Modal.close('modal-update-resource')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="res-modal-total">Total Capacity</label>
+          <input type="number" id="res-modal-total" class="form-control" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="res-modal-available">Available</label>
+          <input type="number" id="res-modal-available" class="form-control" min="0">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="res-modal-occupied">Occupied</label>
+          <input type="number" id="res-modal-occupied" class="form-control" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="res-modal-reserved">Reserved</label>
+          <input type="number" id="res-modal-reserved" class="form-control" min="0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="res-modal-reason">Reason / Note</label>
+        <textarea id="res-modal-reason" class="form-control" rows="2" placeholder="e.g. Routine update, patient admitted…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('modal-update-resource')">Cancel</button>
+      <button class="btn btn-primary" id="res-modal-submit">Update Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: New Emergency Request -->
+<div class="modal-overlay hidden" id="modal-new-request">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3>New Emergency Resource Request</h3>
+      <button class="modal-close" onclick="Modal.close('modal-new-request')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="new-request-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="req-target-hospital">Target Hospital</label>
+          <select id="req-target-hospital" name="targetHospital" class="form-control">
+            <option value="">Broadcast to All Hospitals</option>
+          </select>
+          <div class="form-help">Leave blank to broadcast to all hospitals in the network</div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="req-resource">Resource Type <span class="req">*</span></label>
+            <select id="req-resource" name="resource" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="req-quantity">Quantity <span class="req">*</span></label>
+            <input type="number" id="req-quantity" name="quantity" class="form-control" min="1" value="1" placeholder="1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="req-priority">Priority <span class="req">*</span></label>
+            <select id="req-priority" name="priority" class="form-control">
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH" selected>High</option>
+              <option value="CRITICAL">Critical</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="req-required-by">Required By <span class="req">*</span></label>
+            <input type="datetime-local" id="req-required-by" name="requiredBy" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="req-reason">Reason / Clinical Justification <span class="req">*</span></label>
+          <textarea id="req-reason" name="reason" class="form-control" rows="3" placeholder="Briefly describe the clinical need…"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('modal-new-request')">Cancel</button>
+      <button class="btn btn-primary" onclick="Emergency.submitRequest('new-request-form')">Send Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Confirm (generic) -->
+<div class="modal-overlay hidden" id="modal-confirm">
+  <div class="modal modal-sm">
+    <div class="modal-body confirm-body">
+      <div class="confirm-icon" id="confirm-icon">❓</div>
+      <div class="confirm-title" id="confirm-title">Are you sure?</div>
+      <div class="confirm-msg" id="confirm-msg"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+      <button class="btn btn-primary" id="confirm-ok-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/emergency.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/coordinator.js"></script>
+</body>
+</html>

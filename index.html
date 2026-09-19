@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="MEDISYNC — real-time hospital resource visibility, emergency coordination, and network-wide monitoring across Mangalore hospitals.">
+  <title>MEDISYNC | Mangalore</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <style>
+    /* ---- Landing page specific styles ---- */
+    body {
+      background: #F0F4F8;
+      overflow-x: hidden;
+    }
+
+    /* Hero */
+    .landing-hero {
+      background: linear-gradient(135deg, #0A2540 0%, #090a0b 40%, #0d3153 70%, #0A2540 100%);
+      padding: 100px 5vw 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-hero-tagline {
+      color: #0EA5A4;
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(0, 180, 216, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 180, 216, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      padding: var(--sp-2) var(--sp-4);
+      background: rgba(0, 180, 216, 0.15);
+      border: 1px solid rgba(0, 180, 216, 0.3);
+      border-radius: var(--r-full);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      color: #7dd3fc;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--sp-6);
+      position: relative;
+      z-index: 1;
+    }
+
+    .landing-hero-title {
+      font-size: clamp(2rem, 5vw, 3.75rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: var(--sp-6);
+      position: relative;
+      z-index: 1;
+    }
+
+    .landing-hero-title span {
+      color: var(--color-accent);
+    }
+
+    .landing-hero-sub {
+      font-size: var(--fs-xl);
+      color: rgba(255, 255, 255, 0.65);
+      max-width: 680px;
+      margin: 0 auto var(--sp-10);
+      position: relative;
+      z-index: 1;
+      line-height: 1.6;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      justify-content: center;
+      gap: var(--sp-4);
+      flex-wrap: wrap;
+      margin-bottom: var(--sp-10);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-pill {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      padding: var(--sp-2) var(--sp-5);
+      border-radius: var(--r-full);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: var(--fs-sm);
+    }
+
+    /* Floating stats */
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: var(--sp-8);
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      font-size: var(--fs-3xl);
+      font-weight: 800;
+      color: var(--color-accent);
+    }
+
+    .hero-stat-label {
+      font-size: var(--fs-xs);
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Demo banner */
+    .demo-banner {
+      background: linear-gradient(90deg, #78350f, #92400e);
+      color: #fde68a;
+      padding: var(--sp-3) 5vw;
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+
+    /* Content sections */
+    .landing-content {
+      padding: 80px 5vw;
+    }
+
+    /* Portal cards */
+    .portal-section {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-accent);
+      margin-bottom: var(--sp-3);
+    }
+
+    .section-title {
+      font-size: var(--fs-3xl);
+      font-weight: 800;
+      color: var(--color-text);
+      margin-bottom: var(--sp-4);
+    }
+
+    .section-desc {
+      font-size: var(--fs-lg);
+      color: var(--color-text-muted);
+      max-width: 600px;
+      margin: 0 auto var(--sp-10);
+    }
+
+    .portal-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-6);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .portal-card {
+      background: var(--color-card);
+      border-radius: var(--r-2xl);
+      border: 2px solid var(--color-border-light);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
+      text-decoration: none;
+      display: block;
+    }
+
+    .portal-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .portal-card.coord-card:hover {
+      border-color: var(--color-accent);
+    }
+
+    .portal-card.patient-card:hover {
+      border-color: #0D9488;
+    }
+
+    .portal-card.admin-card:hover {
+      border-color: #6366F1;
+    }
+
+    .portal-card-header {
+      padding: var(--sp-10) var(--sp-8);
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .coord-card .portal-card-header {
+      background: linear-gradient(135deg, #0A2540, #1a3a5c);
+    }
+
+    .patient-card .portal-card-header {
+      background: linear-gradient(135deg, #134e4a, #0D9488);
+    }
+
+    .admin-card .portal-card-header {
+      background: linear-gradient(135deg, #1e1b4b, #4338ca);
+    }
+
+    .portal-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--r-xl);
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: var(--sp-5);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .portal-card-name {
+      font-size: var(--fs-2xl);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: var(--sp-2);
+    }
+
+    .portal-card-role {
+      font-size: var(--fs-sm);
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .portal-card-body {
+      padding: var(--sp-6) var(--sp-8);
+    }
+
+    .portal-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-3);
+      padding: var(--sp-3) 0;
+      border-bottom: 1px solid var(--color-border-light);
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .portal-feature:last-of-type {
+      border-bottom: none;
+    }
+
+    .portal-feature-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .portal-card-footer {
+      padding: var(--sp-5) var(--sp-8) var(--sp-8);
+    }
+
+    .portal-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      width: 100%;
+      padding: var(--sp-4);
+      border-radius: var(--r-lg);
+      font-size: var(--fs-base);
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all var(--t-base);
+      text-decoration: none;
+    }
+
+    .coord-cta {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    .patient-cta {
+      background: #0D9488;
+      color: #fff;
+    }
+
+    .admin-cta {
+      background: #6366F1;
+      color: #fff;
+    }
+
+    .portal-cta:hover {
+      transform: scale(1.02);
+      filter: brightness(1.1);
+    }
+
+    /* Features strip */
+    .features-section {
+      background: var(--color-primary);
+      padding: 80px 5vw;
+      text-align: center;
+    }
+
+    .features-section .section-title {
+      color: #fff;
+    }
+
+    .features-section .section-desc {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-5);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: var(--r-xl);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: var(--sp-6);
+      text-align: left;
+      transition: background var(--t-base);
+    }
+
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .feature-card-icon {
+      font-size: 2rem;
+      margin-bottom: var(--sp-4);
+    }
+
+    .feature-card-title {
+      font-size: var(--fs-base);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: var(--sp-2);
+    }
+
+    .feature-card-desc {
+      font-size: var(--fs-sm);
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .landing-footer {
+      background: #060f1c;
+      padding: var(--sp-10) 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--sp-4);
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+    }
+
+    .footer-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--color-accent);
+      border-radius: var(--r-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .footer-logo-text {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .footer-text {
+      font-size: var(--fs-xs);
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Status indicator strip */
+    .network-status-bar {
+      background: var(--color-primary-light);
+      padding: var(--sp-3) 5vw;
+      display: flex;
+      align-items: center;
+      gap: var(--sp-6);
+      flex-wrap: wrap;
+    }
+
+    .nstatus-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-size: var(--fs-xs);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .nstatus-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .nstatus-live {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      color: var(--color-accent);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      margin-left: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Hero Section -->
+  <section class="landing-hero">
+    <div class="hero-grid-bg"></div>
+    <h1 class="landing-hero-title">
+      MEDISYNC</span>
+    </h1>
+    <h2 class="landing-hero-tagline">Care connected.Lives protected</h2>
+
+    <p class="landing-hero-sub">
+      Real-time resource visibility, emergency coordination, and network-wide monitoring across Mangalore's hospital
+      network.
+    </p>
+    <div class="hero-cta-row">
+      <div class="hero-pill">🔴 Live Polling</div>
+      <div class="hero-pill">🗺️ Interactive Map</div>
+      <div class="hero-pill">🚨 Emergency Mode</div>
+      <div class="hero-pill">📊 Analytics</div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">5</div>
+        <div class="hero-stat-label">Hospitals</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">1,570+</div>
+        <div class="hero-stat-label">Total Beds</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">&lt;5s</div>
+        <div class="hero-stat-label">Update Interval</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">3</div>
+        <div class="hero-stat-label">Portals</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Network Status Bar -->
+  <div class="network-status-bar">
+    <div class="nstatus-item"><span class="nstatus-dot" style="background:#22C55E"></span>AJ Hospital — Normal</div>
+    <div class="nstatus-item"><span class="nstatus-dot" style="background:#22C55E"></span>Father Muller — Normal</div>
+    <div class="nstatus-item"><span class="nstatus-dot" style="background:#F59E0B"></span>KMC Hospital — Low</div>
+    <div class="nstatus-item"><span class="nstatus-dot" style="background:#F59E0B"></span>Yenepoya — Low</div>
+    <div class="nstatus-item"><span class="nstatus-dot"
+        style="background:#EF4444;animation:dotPulse 1.2s infinite"></span>Wenlock — Critical</div>
+    <div class="nstatus-live">● Live</div>
+  </div>
+
+  <!-- Portal Cards -->
+  <main class="landing-content">
+    <div class="portal-section">
+      <div class="section-tag">Choose Your Portal</div>
+      <h2 class="section-title">Three Roles, One Network</h2>
+      <p class="section-desc">Select your role to access your personalized portal — each tailored to your
+        responsibilities within the hospital coordination network.</p>
+
+      <div class="portal-cards">
+
+        <!-- Coordinator -->
+        <a href="coordinator-login.html" class="portal-card coord-card">
+          <div class="portal-card-header">
+            <div class="portal-icon">🏥</div>
+            <div class="portal-card-name">Coordinator</div>
+            <div class="portal-card-role">Hospital Resource Manager</div>
+          </div>
+          <div class="portal-card-body">
+            <div class="portal-feature"><span class="portal-feature-icon">📊</span>Live resource dashboard (beds, ICU,
+              ventilators, blood)</div>
+            <div class="portal-feature"><span class="portal-feature-icon">🚨</span>Send & respond to emergency resource
+              requests</div>
+            <div class="portal-feature"><span class="portal-feature-icon">🗺️</span>Hospital network map with real-time
+              status</div>
+            <div class="portal-feature"><span class="portal-feature-icon">⚡</span>Emergency Mode for rapid crisis
+              response</div>
+            <div class="portal-feature"><span class="portal-feature-icon">📈</span>Utilization analytics & resource
+              history</div>
+          </div>
+          <div class="portal-card-footer">
+            <span class="portal-cta coord-cta">Enter Coordinator Portal →</span>
+          </div>
+        </a>
+
+        <!-- Patient -->
+        <a href="patient-login.html" class="portal-card patient-card">
+          <div class="portal-card-header">
+            <div class="portal-icon">🧑‍⚕️</div>
+            <div class="portal-card-name">Patient</div>
+            <div class="portal-card-role">Find Hospitals & Track Requests</div>
+          </div>
+          <div class="portal-card-body">
+            <div class="portal-feature"><span class="portal-feature-icon">📍</span>Discover nearby hospitals using your
+              location</div>
+            <div class="portal-feature"><span class="portal-feature-icon">🛏️</span>View real-time bed & ICU
+              availability</div>
+            <div class="portal-feature"><span class="portal-feature-icon">📋</span>Submit requests for beds or emergency
+              care</div>
+            <div class="portal-feature"><span class="portal-feature-icon">🔔</span>Track request status in real time
+            </div>
+            <div class="portal-feature"><span class="portal-feature-icon">🗺️</span>Interactive map of the hospital
+              network</div>
+          </div>
+          <div class="portal-card-footer">
+            <span class="portal-cta patient-cta">Enter Patient Portal →</span>
+          </div>
+        </a>
+
+        <!-- Admin -->
+        <a href="admin-login.html" class="portal-card admin-card">
+          <div class="portal-card-header">
+            <div class="portal-icon">⚙️</div>
+            <div class="portal-card-name">Admin</div>
+            <div class="portal-card-role">Network-Wide Oversight</div>
+          </div>
+          <div class="portal-card-body">
+            <div class="portal-feature"><span class="portal-feature-icon">🌐</span>Monitor all hospitals from one
+              dashboard</div>
+            <div class="portal-feature"><span class="portal-feature-icon">🚨</span>Network-wide critical alerts
+              aggregation</div>
+            <div class="portal-feature"><span class="portal-feature-icon">🗺️</span>Color-coded network map by hospital
+              status</div>
+            <div class="portal-feature"><span class="portal-feature-icon">📊</span>Network-wide analytics & fulfillment
+              rates</div>
+            <div class="portal-feature"><span class="portal-feature-icon">📋</span>Read-only oversight — no resource
+              editing</div>
+          </div>
+          <div class="portal-card-footer">
+            <span class="portal-cta admin-cta">Enter Admin Portal →</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Features Strip -->
+  <section class="features-section">
+    <div class="section-tag" style="color:var(--color-accent)">Platform Capabilities</div>
+    <h2 class="section-title" style="margin-bottom:var(--sp-4)">Built for Real-World Hospital Coordination</h2>
+    <p class="section-desc" style="margin-bottom:var(--sp-10)">Every feature is designed with the realities of emergency
+      healthcare coordination in mind.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">⚡</div>
+        <div class="feature-card-title">Live Resource Visibility</div>
+        <div class="feature-card-desc">Resource counts poll every 5 seconds — beds, ICU, ventilators, blood inventory.
+          No page reload needed.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🚨</div>
+        <div class="feature-card-title">Emergency Coordination</div>
+        <div class="feature-card-desc">Broadcast emergency requests to the network or target specific hospitals.
+          CRITICAL alerts pulse visually.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🗺️</div>
+        <div class="feature-card-title">Interactive Network Map</div>
+        <div class="feature-card-desc">OpenStreetMap-powered map showing all hospitals color-coded by status. Click any
+          marker for live stats.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📊</div>
+        <div class="feature-card-title">Utilization Analytics</div>
+        <div class="feature-card-desc">7-day utilization trends, request volume charts, and fulfillment rate tracking
+          across the network.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📍</div>
+        <div class="feature-card-title">Geolocation Discovery</div>
+        <div class="feature-card-desc">Patients use browser geolocation to discover nearby hospitals and check
+          availability before traveling.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🔒</div>
+        <div class="feature-card-title">Role-Based Access</div>
+        <div class="feature-card-desc">Three distinct portals with backend-enforced authorization. Coordinators only
+          update their own hospital's data.</div>
+      </div>
+    </div>
+  </section>
+
+</body>
+
+</html>
